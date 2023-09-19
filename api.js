@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import exec from "child_process"
+import * as child from 'child_process';
 import fileUpload from 'express-fileupload'
 const app = express()
 import Config from './src/config.js'
@@ -26,7 +26,7 @@ app.post('/recog', (req, res) => {
 	   return '"'+cmd.replace(/(["'$`\\])/g,'\\$1')+'"';
 	 };
          let error,stderr,stdout;
-	 exec("songrec recognize "+escapeShell(req.files.file.tempFilePath),(error, stdout, stderr)=>{
+	 child.exec("songrec recognize "+escapeShell(req.files.file.tempFilePath),(error, stdout, stderr)=>{
            if(stdout !== undefined || null){
              res.send('{"success":1,"result":"'+stdout.trim()+'"}');
            }else{
